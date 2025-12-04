@@ -1,4 +1,20 @@
 <resources>
     <string name="app_name">My Application</string>
     <string name="start_quiz">Start quiz</string>
+    <string name="back">Back</string>
+    <string name="answer1">The World Wide Web Consortium</string>
+    <string name="answer2">Microsoft</string>
+    <string name="answer3">Mozilla</string>
+    <string name="answer4">Google</string>
+    <string name="home">Home</string>
+    <string name="grid">Grid</string>
+    <string name="favorites">Favorites</string>
+    <string name="profile">Profile</string>
+    <string name="previous">Previous</string>
+    <string name="next">Next</string>
+    <string name="html">HTML</string>
+    <string name="question_format">Question: 3/30</string>
+    <string name="quit">Quit</string>
+    <string name="sample_question">Who is making the Web standards?</string>
+    <string name="total_questions">30 Question</string>
 </resources>
