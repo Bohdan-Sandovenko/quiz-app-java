@@ -2,8 +2,6 @@ package com.example.myapplication;
 
 import android.os.Bundle;
 import android.widget.Button;
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
@@ -12,10 +10,12 @@ import androidx.appcompat.app.AppCompatActivity;
 public class QuizActivity extends AppCompatActivity {
 
     private TextView textQuestion;
-    private RadioGroup radioGroup;
-    private RadioButton radioA, radioB, radioC, radioD;
-    private Button buttonNext;
+    private TextView textQuestionNumber;
     private TextView textScore;
+    private Button buttonA, buttonB, buttonC, buttonD;
+    private Button buttonNext;
+    private Button buttonPrevious;
+    private int selectedIndex = -1;
 
     private String[] questions = new String[]{
             "What is the capital of France?",
@@ -39,54 +39,66 @@ public class QuizActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_quiz);
 
-        textQuestion = findViewById(R.id.textQuestion);
-        radioGroup = findViewById(R.id.radioGroup);
-        radioA = findViewById(R.id.radioA);
-        radioB = findViewById(R.id.radioB);
-        radioC = findViewById(R.id.radioC);
-        radioD = findViewById(R.id.radioD);
-        buttonNext = findViewById(R.id.buttonNext);
-        textScore = findViewById(R.id.textScore);
+        textQuestion = findViewById(R.id.tv_question);
+        textQuestionNumber = findViewById(R.id.tv_question_number);
+        textScore = findViewById(R.id.tv_total_questions);
+        buttonA = findViewById(R.id.btn_answer1);
+        buttonB = findViewById(R.id.btn_answer2);
+        buttonC = findViewById(R.id.btn_answer3);
+        buttonD = findViewById(R.id.btn_answer4);
+        buttonNext = findViewById(R.id.btn_next);
+        buttonPrevious = findViewById(R.id.btn_previous);
 
         showQuestion();
 
+        buttonA.setOnClickListener(v -> selectAnswer(0));
+        buttonB.setOnClickListener(v -> selectAnswer(1));
+        buttonC.setOnClickListener(v -> selectAnswer(2));
+        buttonD.setOnClickListener(v -> selectAnswer(3));
+
+        buttonPrevious.setOnClickListener(v -> finish());
+
         buttonNext.setOnClickListener(v -> {
-            int selectedId = radioGroup.getCheckedRadioButtonId();
-            if (selectedId == -1) {
-                return; // no selection
-            }
-
-            int selectedIndex = -1;
-            if (selectedId == R.id.radioA) selectedIndex = 0;
-            else if (selectedId == R.id.radioB) selectedIndex = 1;
-            else if (selectedId == R.id.radioC) selectedIndex = 2;
-            else if (selectedId == R.id.radioD) selectedIndex = 3;
-
+            if (selectedIndex == -1) return; // no selection
             if (selectedIndex == answers[currentIndex]) {
                 correctCount++;
             }
 
             currentIndex++;
             if (currentIndex < questions.length) {
-                radioGroup.clearCheck();
+                clearSelection();
                 showQuestion();
             } else {
                 // quiz finished
                 buttonNext.setEnabled(false);
+                buttonA.setEnabled(false);
+                buttonB.setEnabled(false);
+                buttonC.setEnabled(false);
+                buttonD.setEnabled(false);
                 textQuestion.setText("Finished!");
+                textQuestionNumber.setText("");
                 textScore.setText("Score: " + correctCount + "/" + questions.length);
             }
         });
     }
 
+    private void selectAnswer(int index) {
+        selectedIndex = index;
+    }
+
     private void showQuestion() {
         textQuestion.setText(questions[currentIndex]);
-        radioA.setText(options[currentIndex][0]);
-        radioB.setText(options[currentIndex][1]);
-        radioC.setText(options[currentIndex][2]);
-        radioD.setText(options[currentIndex][3]);
+        textQuestionNumber.setText("Question " + (currentIndex + 1) + " of " + questions.length);
         textScore.setText("Score: " + correctCount + "/" + (currentIndex));
+
+        buttonA.setText(options[currentIndex][0]);
+        buttonB.setText(options[currentIndex][1]);
+        buttonC.setText(options[currentIndex][2]);
+        buttonD.setText(options[currentIndex][3]);
+    }
+
+    private void clearSelection() {
+        selectedIndex = -1;
     }
 }
-
 
