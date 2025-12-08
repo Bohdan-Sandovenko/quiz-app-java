@@ -1,5 +1,6 @@
 package com.example.myapplication;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.TextView;
@@ -67,14 +68,11 @@ public class QuizActivity extends AppCompatActivity {
             } else {
                 // quiz finished
                 QuizStore.INSTANCE.addResult(new QuizStore.QuizResult(quiz.getId(), correctCount));
-                buttonNext.setEnabled(false);
-                buttonA.setEnabled(false);
-                buttonB.setEnabled(false);
-                buttonC.setEnabled(false);
-                buttonD.setEnabled(false);
-                textQuestion.setText("Finished!");
-                textQuestionNumber.setText("");
-                textScore.setText("Score: " + correctCount + "/" + items.size());
+                Intent resultIntent = new Intent(this, ResultActivity.class);
+                resultIntent.putExtra(ResultActivity.EXTRA_SCORE, correctCount);
+                resultIntent.putExtra(ResultActivity.EXTRA_TOTAL, items.size());
+                startActivity(resultIntent);
+                finish();
             }
         });
     }
