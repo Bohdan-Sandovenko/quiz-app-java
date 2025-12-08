@@ -28,4 +28,6 @@
             android:theme="@style/Theme.MyApplication" />
     </application>
 
+    <activity android:name=".ResultActivity" />
+
 </manifest>
