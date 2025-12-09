@@ -130,7 +130,6 @@ object QuizStore {
 
     fun getQuizById(id: String?): Quiz? = quizzes.firstOrNull { it.id == id }
 
-    // In-memory results; in real app persist to datastore/db.
     data class QuizResult(
         val quizId: String,
         val correctAnswers: Int
@@ -141,7 +140,7 @@ object QuizStore {
 
     fun addResult(result: QuizResult) {
         _results.removeAll { it.quizId == result.quizId }
-        _results.add(0, result) // most recent first
+        _results.add(0, result)
     }
 
     fun pruneMissingQuizzes() {
