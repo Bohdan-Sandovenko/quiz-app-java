@@ -128,9 +128,9 @@ fun ProgressCircle(correct: Int, total: Int) {
     val progress = if (total == 0) 0f else correct.toFloat() / total.toFloat()
     val percent = (progress * 100).toInt()
     val color = when {
-        percent < 35 -> Color(0xFFD32F2F) // red
-        percent < 70 -> Color(0xFFF9A825) // orange
-        else -> Color(0xFF2E7D32) // green
+        percent < 35 -> Color(0xFFD32F2F)
+        percent < 70 -> Color(0xFFF9A825)
+        else -> Color(0xFF2E7D32)
     }
     Box(
         modifier = Modifier

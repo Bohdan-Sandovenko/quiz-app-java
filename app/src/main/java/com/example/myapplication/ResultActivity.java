@@ -12,6 +12,7 @@ public class ResultActivity extends AppCompatActivity {
 
     public static final String EXTRA_SCORE = "score";
     public static final String EXTRA_TOTAL = "total";
+    public static final String EXTRA_QUIZ_ID = "quiz_id";
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -27,33 +28,43 @@ public class ResultActivity extends AppCompatActivity {
         int score = getIntent().getIntExtra(EXTRA_SCORE, 0);
         int total = getIntent().getIntExtra(EXTRA_TOTAL, 0);
 
-        tvCongrats.setText("Gratulacje!");
-        tvScore.setText("Twój wynik: " + score + " z " + total);
+        tvCongrats.setText("Congratulations!");
+        tvScore.setText("Your score: " + score + " out of " + total);
 
         String message;
         double percent = total == 0 ? 0 : (double) score / total;
 
         if (percent == 1.0) {
-            message = "Perfekcyjnie! Odpowiedziałeś poprawnie na wszystkie pytania.";
+            message = "Perfect! You answered all questions correctly.";
         } else if (percent >= 0.7) {
-            message = "Świetny wynik! Tak trzymaj!";
+            message = "Great result! Keep it up!";
         } else if (percent >= 0.4) {
-            message = "Nieźle! Spróbuj jeszcze raz, aby poprawić wynik.";
+            message = "Not bad! Try again to improve your score.";
         } else {
-            message = "Każdy kiedyś zaczyna. Powtórz materiał i spróbuj ponownie!";
+            message = "Everyone starts somewhere. Review the material and try again!";
         }
 
-        message += "\n\nDziękujemy za udział w teście!";
+        message += "\n\nThank you for taking the quiz!";
 
         tvMessage.setText(message);
 
+        String quizId = getIntent().getStringExtra(EXTRA_QUIZ_ID);
+        
         btnRestart.setOnClickListener(v -> {
+            if (quizId != null) {
+                Intent intent = new Intent(this, QuizActivity.class);
+                intent.putExtra("quiz_id", quizId);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intent);
+                finish();
+            }
+        });
+
+        btnExit.setOnClickListener(v -> {
             Intent intent = new Intent(this, MainActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(intent);
             finish();
         });
-
-        btnExit.setOnClickListener(v -> finishAffinity());
     }
 }
